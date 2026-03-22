@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "InkWell Example",
-    "slug": "react-native-ink-well-example",
+    "slug": "react-native-ink-response-example",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

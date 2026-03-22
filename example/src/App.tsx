@@ -1,12 +1,12 @@
 import { Text, View, StyleSheet } from 'react-native';
-import { InkWell } from 'react-native-ink-well';
+import { InkResponse } from 'react-native-ink-response';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <InkWell>
+      <InkResponse>
         <Text>Tap me</Text>
-      </InkWell>
+      </InkResponse>
     </View>
   );
 }

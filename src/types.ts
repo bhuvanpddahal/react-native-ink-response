@@ -9,10 +9,10 @@ import Animated, {
 
 import type { AnimatedPressable } from './constants';
 
-export type InkWellRef = AnimatedRef<Animated.View>;
-export type InkWellPosition = 'relative' | 'absolute';
-export type InkWellEasing = EasingFunction | EasingFunctionFactory;
-export type InkWellSplashColor =
+export type InkResponseRef = AnimatedRef<Animated.View>;
+export type InkResponsePosition = 'relative' | 'absolute';
+export type InkResponseEasing = EasingFunction | EasingFunctionFactory;
+export type InkResponseSplashColor =
   | string
   | SharedValue<string>
   | DerivedValue<string>;
@@ -23,18 +23,18 @@ type AnimatedPressableProps = Omit<
   'ref' | 'key' | 'children'
 >;
 
-export type InkWellProps = AnimatedPressableProps & {
-  ref?: InkWellRef;
-  position?: InkWellPosition;
+export type InkResponseProps = AnimatedPressableProps & {
+  ref?: InkResponseRef;
+  position?: InkResponsePosition;
   initialScale?: number;
   initialOpacity?: number;
   delayPressIn?: number;
   clipped?: boolean;
   duration?: number;
-  easing?: InkWellEasing;
-  splashColor?: InkWellSplashColor;
+  easing?: InkResponseEasing;
+  splashColor?: InkResponseSplashColor;
   exitDuration?: number;
-  exitEasing?: InkWellEasing;
+  exitEasing?: InkResponseEasing;
   interruptible?: boolean;
   children?: ReactNode;
   onTapBegin?: () => void;

@@ -21,9 +21,9 @@ import {
   INITIAL_SCALE,
   SPLASH_COLOR,
 } from './constants';
-import type { AnimationStatus, InkWellProps } from './types';
+import type { AnimationStatus, InkResponseProps } from './types';
 
-export const InkWell = ({
+export const InkResponse = ({
   ref,
   style,
   initialScale = INITIAL_SCALE,
@@ -41,7 +41,7 @@ export const InkWell = ({
   onTap,
   onTapEnd,
   ...props
-}: InkWellProps) => {
+}: InkResponseProps) => {
   const timeout = useSharedValue(0);
   const splashScale = useSharedValue(0);
   const splashRadius = useSharedValue(0);

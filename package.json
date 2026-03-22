@@ -1,6 +1,6 @@
 {
-  "name": "react-native-ink-well",
-  "version": "0.1.0",
+  "name": "react-native-ink-response",
+  "version": "0.2.0",
   "description": "A performant, highly customizable Material Design ripple effect for React Native.",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
@@ -32,7 +32,7 @@
     "!**/.*"
   ],
   "scripts": {
-    "example": "yarn workspace react-native-ink-well-example",
+    "example": "yarn workspace react-native-ink-response-example",
     "clean": "del-cli lib",
     "prepare": "bob build",
     "typecheck": "tsc",
@@ -47,14 +47,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bhuvanpddahal/react-native-ink-well.git"
+    "url": "git+https://github.com/bhuvanpddahal/react-native-ink-response.git"
   },
   "author": "Bhuvan Dahal <bhuvandahal6@gmail.com> (https://github.com/bhuvanpddahal)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bhuvanpddahal/react-native-ink-well/issues"
+    "url": "https://github.com/bhuvanpddahal/react-native-ink-response/issues"
   },
-  "homepage": "https://github.com/bhuvanpddahal/react-native-ink-well#readme",
+  "homepage": "https://github.com/bhuvanpddahal/react-native-ink-response#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },

@@ -1,17 +1,17 @@
-import { InkWell } from './InkWell';
+import { InkResponse } from './InkResponse';
 import type {
-  InkWellRef,
-  InkWellPosition,
-  InkWellEasing,
-  InkWellSplashColor,
-  InkWellProps,
+  InkResponseRef,
+  InkResponsePosition,
+  InkResponseEasing,
+  InkResponseSplashColor,
+  InkResponseProps,
 } from './types';
 
 export {
-  InkWell,
-  type InkWellRef,
-  type InkWellPosition,
-  type InkWellEasing,
-  type InkWellSplashColor,
-  type InkWellProps,
+  InkResponse,
+  type InkResponseRef,
+  type InkResponsePosition,
+  type InkResponseEasing,
+  type InkResponseSplashColor,
+  type InkResponseProps,
 };
