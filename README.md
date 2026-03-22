@@ -1,26 +1,25 @@
-# react-native-ink-well
+# React Native InkWell
 
 A performant, highly customizable Material Design ripple effect for React Native.
 
 ## Installation
 
-
 ```sh
 npm install react-native-ink-well
 ```
 
-
 ## Usage
 
-
 ```js
-import { multiply } from 'react-native-ink-well';
+import { InkWell } from 'react-native-ink-well';
 
 // ...
-
-const result = await multiply(3, 7);
+return (
+  <InkWell>
+    <Text>Tap me</Text>
+  </InkWell>
+);
 ```
-
 
 ## Contributing
 

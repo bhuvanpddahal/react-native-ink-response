@@ -1,12 +1,12 @@
 import { Text, View, StyleSheet } from 'react-native';
-import { multiply } from 'react-native-ink-well';
-
-const result = multiply(3, 7);
+import { InkWell } from 'react-native-ink-well';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <InkWell>
+        <Text>Tap me</Text>
+      </InkWell>
     </View>
   );
 }

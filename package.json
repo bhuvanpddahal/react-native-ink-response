@@ -157,5 +157,10 @@
       "jest"
     ],
     "version": "0.57.2"
+  },
+  "dependencies": {
+    "react-native-gesture-handler": "^2.30.0",
+    "react-native-reanimated": "^4.2.3",
+    "react-native-worklets": "^0.8.1"
   }
 }

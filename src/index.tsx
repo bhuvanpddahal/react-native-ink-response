@@ -1,3 +1,17 @@
-export function multiply(a: number, b: number): number {
-  return a * b;
-}
+import { InkWell } from './InkWell';
+import type {
+  InkWellRef,
+  InkWellPosition,
+  InkWellEasing,
+  InkWellSplashColor,
+  InkWellProps,
+} from './types';
+
+export {
+  InkWell,
+  type InkWellRef,
+  type InkWellPosition,
+  type InkWellEasing,
+  type InkWellSplashColor,
+  type InkWellProps,
+};
