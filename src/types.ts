@@ -12,11 +12,12 @@ import type { AnimatedPressable } from './constants';
 export type InkResponseRef = AnimatedRef<Animated.View>;
 export type InkResponsePosition = 'relative' | 'absolute';
 export type InkResponseEasing = EasingFunction | EasingFunctionFactory;
-export type InkResponseSplashColor =
+export type InkResponseColor =
   | string
   | SharedValue<string>
   | DerivedValue<string>;
-export type AnimationStatus = 'queued' | 'active' | 'completed';
+export type InkResponseSplashPosition = 'tap' | 'center';
+export type EnterAnimationStatus = 'queued' | 'active' | 'completed';
 
 type AnimatedPressableProps = Omit<
   ComponentPropsWithoutRef<typeof AnimatedPressable>,
@@ -30,9 +31,11 @@ export type InkResponseProps = AnimatedPressableProps & {
   initialOpacity?: number;
   delayPressIn?: number;
   clipped?: boolean;
-  duration?: number;
-  easing?: InkResponseEasing;
-  splashColor?: InkResponseSplashColor;
+  enterDuration?: number;
+  enterEasing?: InkResponseEasing;
+  splashColor?: InkResponseColor;
+  splashPosition?: InkResponseSplashPosition;
+  splashRadius?: number;
   exitDuration?: number;
   exitEasing?: InkResponseEasing;
   interruptible?: boolean;

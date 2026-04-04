@@ -3,7 +3,7 @@ import type {
   InkResponseRef,
   InkResponsePosition,
   InkResponseEasing,
-  InkResponseSplashColor,
+  InkResponseColor,
   InkResponseProps,
 } from './types';
 
@@ -12,6 +12,6 @@ export {
   type InkResponseRef,
   type InkResponsePosition,
   type InkResponseEasing,
-  type InkResponseSplashColor,
+  type InkResponseColor,
   type InkResponseProps,
 };

@@ -10,32 +10,25 @@ import Animated, {
 } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
-import {
-  AnimatedPressable,
-  DELAY_PRESS_IN,
-  DURATION,
-  EASING,
-  EXIT_DURATION,
-  EXIT_EASING,
-  INITIAL_OPACITY,
-  INITIAL_SCALE,
-  SPLASH_COLOR,
-} from './constants';
-import type { AnimationStatus, InkResponseProps } from './types';
+import { AnimatedPressable, Defaults } from './constants';
+import type { EnterAnimationStatus, InkResponseProps } from './types';
 
 export const InkResponse = ({
   ref,
   style,
-  initialScale = INITIAL_SCALE,
-  initialOpacity = INITIAL_OPACITY,
-  delayPressIn = DELAY_PRESS_IN,
-  clipped = true,
-  duration = DURATION,
-  easing = EASING,
-  splashColor = SPLASH_COLOR,
-  exitDuration = EXIT_DURATION,
-  exitEasing = EXIT_EASING,
-  interruptible = false,
+  position = Defaults.position,
+  initialScale = Defaults.initialScale,
+  initialOpacity = Defaults.initialOpacity,
+  delayPressIn = Defaults.delayPressIn,
+  clipped = Defaults.clipped,
+  enterDuration = Defaults.enterDuration,
+  enterEasing = Defaults.enterEasing,
+  splashColor = Defaults.splashColor,
+  splashPosition = Defaults.splashPosition,
+  splashRadius: radius,
+  exitDuration = Defaults.exitDuration,
+  exitEasing = Defaults.exitEasing,
+  interruptible = Defaults.interruptible,
   children,
   onTapBegin,
   onTap,
@@ -46,12 +39,12 @@ export const InkResponse = ({
   const splashScale = useSharedValue(0);
   const splashRadius = useSharedValue(0);
   const splashOpacity = useSharedValue(0);
-  const hasTapped = useSharedValue(false);
   const hasTapEnded = useSharedValue(false);
+  const translate = useSharedValue({ x: 0, y: 0 });
   const transformOrigin = useSharedValue('center');
-  const tapPosition = useSharedValue({ x: 0, y: 0 });
   const animatedRef = useAnimatedRef<Animated.View>();
-  const animationStatus = useSharedValue<AnimationStatus>('completed');
+  const enterAnimationStatus =
+    useSharedValue<EnterAnimationStatus>('completed');
 
   const containerRef = ref ?? animatedRef;
 
@@ -77,38 +70,47 @@ export const InkResponse = ({
     );
   };
 
-  const runAnimation = (x: number, y: number) => {
+  const runEnterAnimation = (x: number, y: number) => {
     'worklet';
 
     timeout.set(0);
-    animationStatus.set('active');
+    enterAnimationStatus.set('active');
 
     const layout = measure(containerRef);
     const width = layout?.width ?? 0;
     const height = layout?.height ?? 0;
+    const tapX = splashPosition === 'tap' ? x : width / 2;
+    const tapY = splashPosition === 'tap' ? y : height / 2;
 
-    splashRadius.set(Math.sqrt(width ** 2 + height ** 2));
-    transformOrigin.set('center');
-    tapPosition.set({ x, y });
+    const _radius =
+      radius === undefined ? Math.sqrt(width ** 2 + height ** 2) / 2 : radius;
+    const shiftX = _radius - width / 2;
+    const shiftY = _radius - height / 2;
+    const originX = shiftX + tapX;
+    const originY = shiftY + tapY;
+
+    splashRadius.set(_radius);
+    translate.set({ x: -shiftX, y: -shiftY });
+    transformOrigin.set(`${originX}px ${originY}px`);
     splashScale.set(initialScale);
     splashOpacity.set(initialOpacity);
     splashScale.set(
       withTiming(1, {
-        duration,
-        easing,
+        duration: enterDuration,
+        easing: enterEasing,
       })
     );
     splashOpacity.set(
       withTiming(1, {
-        duration,
-        easing,
+        duration: enterDuration,
+        easing: enterEasing,
       })
     );
     timeout.set(
-      withTiming(1, { duration }, (finished) => {
+      withTiming(1, { duration: enterDuration }, (finished) => {
         if (!finished) return;
 
-        animationStatus.set('completed');
+        enterAnimationStatus.set('completed');
         if (hasTapEnded.get()) {
           runExitAnimation();
         }
@@ -119,22 +121,23 @@ export const InkResponse = ({
   const tapGesture = Gesture.Tap()
     .maxDuration(Infinity)
     .onBegin((event) => {
-      if (!interruptible && animationStatus.get() !== 'completed') return;
+      if (!interruptible && enterAnimationStatus.get() !== 'completed') {
+        return;
+      }
 
-      if (animationStatus.get() !== 'completed') {
+      if (enterAnimationStatus.get() !== 'completed') {
         cancelAnimation(timeout);
         cancelAnimation(splashScale);
         cancelAnimation(splashOpacity);
       }
       timeout.set(0);
-      hasTapped.set(false);
       hasTapEnded.set(false);
-      animationStatus.set('queued');
+      enterAnimationStatus.set('queued');
 
       timeout.set(
         withTiming(1, { duration: delayPressIn }, (finished) => {
           if (finished) {
-            runAnimation(event.x, event.y);
+            runEnterAnimation(event.x, event.y);
             if (onTapBegin) {
               scheduleOnRN(onTapBegin);
             }
@@ -143,39 +146,38 @@ export const InkResponse = ({
       );
     })
     .onStart((event) => {
-      hasTapped.set(true);
-
-      if (animationStatus.get() === 'queued') {
+      if (enterAnimationStatus.get() === 'queued') {
         cancelAnimation(timeout);
-        runAnimation(event.x, event.y);
+        runEnterAnimation(event.x, event.y);
         if (onTapBegin) {
           scheduleOnRN(onTapBegin);
         }
       }
-      if (hasTapped.get() && onTap) {
+      if (onTap) {
         scheduleOnRN(onTap);
       }
     })
     .onFinalize(() => {
       hasTapEnded.set(true);
 
-      if (animationStatus.get() === 'queued') {
+      if (enterAnimationStatus.get() === 'queued') {
         cancelAnimation(timeout);
-      } else if (animationStatus.get() === 'completed') {
+      } else if (enterAnimationStatus.get() === 'completed') {
         runExitAnimation();
       }
     });
 
   const splashAnimatedStyle = useAnimatedStyle(() => {
-    let translateX = 0,
-      translateY = 0;
-
     return {
       width: splashRadius.get() * 2,
       height: splashRadius.get() * 2,
       borderRadius: splashRadius.get(),
       opacity: splashOpacity.get(),
-      transform: [{ translateX }, { translateY }, { scale: splashScale.get() }],
+      transform: [
+        { translateX: translate.get().x },
+        { translateY: translate.get().y },
+        { scale: splashScale.get() },
+      ],
       transformOrigin: transformOrigin.get(),
       backgroundColor:
         typeof splashColor === 'string' ? splashColor : splashColor.get(),
@@ -187,7 +189,7 @@ export const InkResponse = ({
       <AnimatedPressable
         {...props}
         ref={containerRef}
-        style={[style, styles.container, clipped && { overflow: 'hidden' }]}
+        style={[style, { position }, clipped && styles.clipped]}
       >
         <Animated.View style={[styles.splash, splashAnimatedStyle]} />
         {children}
@@ -197,12 +199,12 @@ export const InkResponse = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    position: 'relative',
-  },
   splash: {
     position: 'absolute',
     top: 0,
     left: 0,
+  },
+  clipped: {
+    overflow: 'hidden',
   },
 });
