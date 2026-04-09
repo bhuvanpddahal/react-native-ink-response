@@ -51,26 +51,26 @@ const MyButton = () => {
 
 ### Props
 
-| Prop                 | Type                       | Default              | Description                                                                             |
-| :------------------- | :------------------------- | :------------------- | :-------------------------------------------------------------------------------------- |
-| **`splashColor`**    | `InkResponseColor`         | `rgba(0, 0, 0, 0.1)` | The color of the ripple. Supports strings and Reanimated Shared/Derived values.         |
-| **`splashPosition`** | `'tap' \| 'center'`        | `'tap'`              | Where the ripple starts. `'tap'` follows the finger; `'center'` starts from the middle. |
-| **`splashRadius`**   | `number`                   | `Calculated`         | The maximum radius of the splash. By default, covers the entire container.              |
-| **`clipped`**        | `boolean`                  | `true`               | If `true`, the splash is contained within the view bounds (like `InkWell`).             |
-| **`enterDuration`**  | `number`                   | `300`                | Duration of the expansion animation in milliseconds.                                    |
-| **`exitDuration`**   | `number`                   | `300`                | Duration of the fade-out animation after release.                                       |
-| **`initialScale`**   | `number`                   | `0.3`                | The scale at which the splash begins.                                                   |
-| **`initialOpacity`** | `number`                   | `0.3`                | The opacity of the splash at the start of the animation.                                |
-| **`delayPressIn`**   | `number`                   | `100`                | Delay to distinguish long press.                                                        |
-| **`interruptible`**  | `boolean`                  | `false`              | Whether a new tap can interrupt an ongoing enter animation.                             |
-| **`position`**       | `'relative' \| 'absolute'` | `'relative'`         | The CSS position of the container.                                                      |
+| Prop                 | Type                       | Default                | Description                                                                             |
+| :------------------- | :------------------------- | :--------------------- | :-------------------------------------------------------------------------------------- |
+| **`splashColor`**    | `InkResponseColor`         | `'rgba(0, 0, 0, 0.1)'` | The color of the ripple. Supports strings and Reanimated Shared/Derived values.         |
+| **`splashPosition`** | `'tap' \| 'center'`        | `'tap'`                | Where the ripple starts. `'tap'` follows the finger; `'center'` starts from the middle. |
+| **`splashRadius`**   | `number`                   | `Calculated`           | The maximum radius of the splash. By default, covers the entire container.              |
+| **`clipped`**        | `boolean`                  | `true`                 | If `true`, the splash is contained within the view bounds (like `InkWell`).             |
+| **`enterDuration`**  | `number`                   | `250`                  | Duration of the expansion animation in milliseconds.                                    |
+| **`exitDuration`**   | `number`                   | `200`                  | Duration of the fade-out animation after release.                                       |
+| **`initialScale`**   | `number`                   | `0.3`                  | The scale at which the splash begins.                                                   |
+| **`initialOpacity`** | `number`                   | `0.3`                  | The opacity of the splash at the start of the animation.                                |
+| **`delayPressIn`**   | `number`                   | `100`                  | Delay to distinguish long press.                                                        |
+| **`interruptible`**  | `boolean`                  | `false`                | Whether a new tap can interrupt an ongoing enter animation.                             |
+| **`position`**       | `'relative' \| 'absolute'` | `'relative'`           | The CSS position of the container.                                                      |
 
 ### Animation & Easing
 
-| Prop              | Type             | Default         | Description                                                       |
-| :---------------- | :--------------- | :-------------- | :---------------------------------------------------------------- |
-| **`enterEasing`** | `EasingFunction` | `Easing.linear` | Easing curve for the expansion (e.g., `Easing.out(Easing.quad)`). |
-| **`exitEasing`**  | `EasingFunction` | `Easing.linear` | Easing curve for the fade-out.                                    |
+| Prop              | Type             | Default                               | Description                                                       |
+| :---------------- | :--------------- | :------------------------------------ | :---------------------------------------------------------------- |
+| **`enterEasing`** | `EasingFunction` | `Easing.bezier(0.2, 0.6, 0.69, 0.93)` | Easing curve for the expansion (e.g., `Easing.out(Easing.quad)`). |
+| **`exitEasing`**  | `EasingFunction` | `Easing.linear`                       | Easing curve for the fade-out.                                    |
 
 > **Note:** Import `Easing` from `react-native-reanimated` package.
 
@@ -86,4 +86,4 @@ const MyButton = () => {
 
 ## License
 
-MIT © [bhuvandahal16](https://github.com/bhuvanpddahal)
+MIT © [bhuvanpddahal](https://github.com/bhuvanpddahal)
