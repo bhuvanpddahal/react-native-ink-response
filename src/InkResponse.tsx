@@ -2,16 +2,22 @@ import { StyleSheet } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   cancelAnimation,
+  interpolateColor,
   measure,
   useAnimatedRef,
   useAnimatedStyle,
+  useDerivedValue,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
 import { AnimatedPressable, Defaults } from './constants';
-import type { EnterAnimationStatus, InkResponseProps } from './types';
+import type {
+  EnterAnimationStatus,
+  HighlightProps,
+  InkResponseProps,
+} from './types';
 
 export const InkResponse = ({
   ref,
@@ -19,14 +25,17 @@ export const InkResponse = ({
   position = Defaults.position,
   initialScale = Defaults.initialScale,
   initialOpacity = Defaults.initialOpacity,
-  delayPressIn = Defaults.delayPressIn,
+  pressInDelay = Defaults.pressInDelay,
   clipped = Defaults.clipped,
   enterDuration = Defaults.enterDuration,
+  highlightEnterDuration = Defaults.highlightEnterDuration,
   enterEasing = Defaults.enterEasing,
   splashColor = Defaults.splashColor,
+  highlightColor = Defaults.highlightColor,
   splashPosition = Defaults.splashPosition,
   splashRadius: radius,
   exitDuration = Defaults.exitDuration,
+  highlightExitDuration = Defaults.highlightExitDuration,
   exitEasing = Defaults.exitEasing,
   interruptible = Defaults.interruptible,
   children,
@@ -39,7 +48,7 @@ export const InkResponse = ({
   const splashScale = useSharedValue(0);
   const splashRadius = useSharedValue(0);
   const splashOpacity = useSharedValue(0);
-  const hasTapEnded = useSharedValue(false);
+  const hasTapEnded = useSharedValue(true);
   const translate = useSharedValue({ x: 0, y: 0 });
   const transformOrigin = useSharedValue('center');
   const animatedRef = useAnimatedRef<Animated.View>();
@@ -131,12 +140,12 @@ export const InkResponse = ({
         cancelAnimation(splashOpacity);
       }
       timeout.set(0);
-      hasTapEnded.set(false);
       enterAnimationStatus.set('queued');
 
       timeout.set(
-        withTiming(1, { duration: delayPressIn }, (finished) => {
+        withTiming(1, { duration: pressInDelay }, (finished) => {
           if (finished) {
+            hasTapEnded.set(false);
             runEnterAnimation(event.x, event.y);
             if (onTapBegin) {
               scheduleOnRN(onTapBegin);
@@ -148,6 +157,7 @@ export const InkResponse = ({
     .onStart((event) => {
       if (enterAnimationStatus.get() === 'queued') {
         cancelAnimation(timeout);
+        hasTapEnded.set(false);
         runEnterAnimation(event.x, event.y);
         if (onTapBegin) {
           scheduleOnRN(onTapBegin);
@@ -191,6 +201,14 @@ export const InkResponse = ({
         ref={containerRef}
         style={[style, { position }, clipped && styles.clipped]}
       >
+        {highlightColor && (
+          <Highlight
+            highlightEnterDuration={highlightEnterDuration}
+            highlightColor={highlightColor}
+            highlightExitDuration={highlightExitDuration}
+            hasTapEnded={hasTapEnded}
+          />
+        )}
         <Animated.View style={[styles.splash, splashAnimatedStyle]} />
         {children}
       </AnimatedPressable>
@@ -198,7 +216,43 @@ export const InkResponse = ({
   );
 };
 
+const Highlight = ({
+  highlightEnterDuration,
+  highlightColor,
+  highlightExitDuration,
+  hasTapEnded,
+}: HighlightProps) => {
+  const activeProgress = useDerivedValue(() => {
+    return withTiming(hasTapEnded.get() ? 0 : 1, {
+      duration: hasTapEnded.get()
+        ? highlightExitDuration
+        : highlightEnterDuration,
+    });
+  });
+
+  const highlightAnimatedStyle = useAnimatedStyle(() => {
+    const highlight =
+      typeof highlightColor === 'string'
+        ? highlightColor
+        : highlightColor.get();
+
+    return {
+      backgroundColor: interpolateColor(
+        activeProgress.get(),
+        [0, 1],
+        ['transparent', highlight]
+      ),
+    };
+  });
+
+  return <Animated.View style={[styles.highlight, highlightAnimatedStyle]} />;
+};
+
 const styles = StyleSheet.create({
+  highlight: {
+    position: 'absolute',
+    inset: 0,
+  },
   splash: {
     position: 'absolute',
     top: 0,

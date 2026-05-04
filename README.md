@@ -2,8 +2,6 @@
 
 A high-performance, fully customizable **Material Design ink splash** component for React Native. Powered by `react-native-reanimated`, `react-native-gesture-handler` and `react-native-worklets`.
 
-Inspired by Flutter's `InkResponse`, this library provides a fluid, hardware-accelerated ripple effect that can be clipped to its container or allowed to flow freely for icon buttons and circular surfaces.
-
 ## Features
 
 - **🚀 Performance:** Runs entirely on the UI thread via Reanimated and Worklets.
@@ -42,9 +40,23 @@ import { InkResponse } from 'react-native-ink-response';
 const MyButton = () => {
   return (
     <InkResponse
-      style={{ width: '100%', paddingHorizontal: 16, paddingVertical: 14 }}
+      highlightColor="#d97706"
+      style={{
+        paddingHorizontal: 16,
+        paddingVertical: 20,
+        borderRadius: 50,
+        backgroundColor: '#f59e0b',
+      }}
     >
-      <Text style={{ fontSize: 15 }}>Tap me</Text>
+      <Text
+        style={{
+          color: 'black',
+          fontWeight: '500',
+          textAlign: 'center',
+        }}
+      >
+        Tap me
+      </Text>
     </InkResponse>
   );
 };
@@ -63,23 +75,26 @@ For more, check out the [Examples](#examples) section below.
 | **`splashColor`**    | `InkResponseColor`         | `'rgba(0, 0, 0, 0.1)'` | The color of the ripple. Supports strings and Reanimated Shared/Derived values.         |
 | **`splashPosition`** | `'tap' \| 'center'`        | `'tap'`                | Where the ripple starts. `'tap'` follows the finger; `'center'` starts from the middle. |
 | **`splashRadius`**   | `number`                   | `Calculated`           | The maximum radius of the splash. By default, covers the entire container.              |
+| **`highlightColor`** | `InkResponseColor`         | `—`                    | The color of the persistent overlay shown while the surface is pressed.                 |
 | **`clipped`**        | `boolean`                  | `true`                 | If `true`, the splash is contained within the view bounds (like `InkWell`).             |
-| **`enterDuration`**  | `number`                   | `250`                  | Duration of the expansion animation in milliseconds.                                    |
-| **`exitDuration`**   | `number`                   | `200`                  | Duration of the fade-out animation after release.                                       |
 | **`initialScale`**   | `number`                   | `0.3`                  | The scale at which the splash begins.                                                   |
 | **`initialOpacity`** | `number`                   | `0.3`                  | The opacity of the splash at the start of the animation.                                |
-| **`delayPressIn`**   | `number`                   | `100`                  | Delay to distinguish long press.                                                        |
+| **`pressInDelay`**   | `number`                   | `100`                  | Wait time before activating the splash to distinguish tapping from scrolling.           |
 | **`interruptible`**  | `boolean`                  | `false`                | Whether a new tap can interrupt an ongoing enter animation.                             |
 | **`position`**       | `'relative' \| 'absolute'` | `'relative'`           | The CSS position of the container.                                                      |
 
 ### Animation & Easing
 
-| Prop              | Type             | Default                               | Description                                                       |
-| :---------------- | :--------------- | :------------------------------------ | :---------------------------------------------------------------- |
-| **`enterEasing`** | `EasingFunction` | `Easing.bezier(0.2, 0.6, 0.69, 0.93)` | Easing curve for the expansion (e.g., `Easing.out(Easing.quad)`). |
-| **`exitEasing`**  | `EasingFunction` | `Easing.linear`                       | Easing curve for the fade-out.                                    |
+| Prop                         | Type             | Default                               | Description                                                       |
+| :--------------------------- | :--------------- | :------------------------------------ | :---------------------------------------------------------------- |
+| **`enterDuration`**          | `number`         | `250`                                 | Duration of the expansion animation in milliseconds.              |
+| **`exitDuration`**           | `number`         | `200`                                 | Duration of the fade-out animation after release.                 |
+| **`enterEasing`**            | `EasingFunction` | `Easing.bezier(0.2, 0.6, 0.69, 0.93)` | Easing curve for the expansion (e.g., `Easing.out(Easing.quad)`). |
+| **`exitEasing`**             | `EasingFunction` | `Easing.linear`                       | Easing curve for the fade-out.                                    |
+| **`highlightEnterDuration`** | `number`         | `100`                                 | Duration (ms) for the highlight to fade in.                       |
+| **`highlightExitDuration`**  | `number`         | `200`                                 | Duration (ms) for the highlight to fade out after release.        |
 
-> **Note:** Import `Easing` from `react-native-reanimated` package.
+> Import `Easing` from `react-native-reanimated` package.
 
 ### Events
 
@@ -125,7 +140,6 @@ const SettingsCard = () => (
 By setting `clipped={false}`, you allow the ripple to expand into a perfect circle that can exceed the touch target's bounds - essential for Material-style icon buttons.
 
 ```tsx
-import { View } from 'react-native';
 import { InkResponse } from 'react-native-ink-response';
 import { Ionicons } from '@expo/vector-icons'; // Or your preferred icon library
 

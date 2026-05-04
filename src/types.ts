@@ -29,18 +29,30 @@ export type InkResponseProps = AnimatedPressableProps & {
   position?: InkResponsePosition;
   initialScale?: number;
   initialOpacity?: number;
-  delayPressIn?: number;
+  pressInDelay?: number;
   clipped?: boolean;
   enterDuration?: number;
+  highlightEnterDuration?: number;
   enterEasing?: InkResponseEasing;
   splashColor?: InkResponseColor;
+  highlightColor?: InkResponseColor;
   splashPosition?: InkResponseSplashPosition;
   splashRadius?: number;
   exitDuration?: number;
+  highlightExitDuration?: number;
   exitEasing?: InkResponseEasing;
   interruptible?: boolean;
   children?: ReactNode;
   onTapBegin?: () => void;
   onTap?: () => void;
   onTapEnd?: () => void;
+};
+
+export type HighlightProps = Required<
+  Pick<
+    InkResponseProps,
+    'highlightEnterDuration' | 'highlightColor' | 'highlightExitDuration'
+  >
+> & {
+  hasTapEnded: SharedValue<boolean>;
 };
