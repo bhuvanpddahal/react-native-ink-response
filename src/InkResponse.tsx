@@ -42,6 +42,7 @@ export const InkResponse = ({
   onTapBegin,
   onTap,
   onTapEnd,
+  disabled,
   ...props
 }: InkResponseProps) => {
   const timeout = useSharedValue(0);
@@ -130,7 +131,14 @@ export const InkResponse = ({
   const tapGesture = Gesture.Tap()
     .maxDuration(Infinity)
     .onBegin((event) => {
-      if (!interruptible && enterAnimationStatus.get() !== 'completed') {
+      const actualDisabled =
+        typeof disabled === 'object' && disabled !== null && 'get' in disabled
+          ? disabled.get()
+          : disabled;
+      if (
+        actualDisabled ||
+        (!interruptible && enterAnimationStatus.get() !== 'completed')
+      ) {
         return;
       }
 
@@ -200,6 +208,7 @@ export const InkResponse = ({
         {...props}
         ref={containerRef}
         style={[style, { position }, clipped && styles.clipped]}
+        disabled={disabled}
       >
         {highlightColor && (
           <Highlight
