@@ -78,7 +78,8 @@ For more, check out the [Examples](#examples) section below.
 | **`highlightColor`** | `InkResponseColor`         | `—`                    | The color of the persistent overlay shown while the surface is pressed.                 |
 | **`clipped`**        | `boolean`                  | `true`                 | If `true`, the splash is contained within the view bounds (like `InkWell`).             |
 | **`initialScale`**   | `number`                   | `0.3`                  | The scale at which the splash begins.                                                   |
-| **`initialOpacity`** | `number`                   | `0.3`                  | The opacity of the splash at the start of the animation.                                |
+| **`initialOpacity`** | `number`                   | `0.3`                  | The opacity of the splash at the start of the enter animation.                          |
+| **`finalOpacity`**   | `number`                   | `1`                    | The opacity of the splash at the peak of the enter animation.                           |
 | **`pressInDelay`**   | `number`                   | `100`                  | Wait time before activating the splash to distinguish tapping from scrolling.           |
 | **`interruptible`**  | `boolean`                  | `false`                | Whether a new tap can interrupt an ongoing enter animation.                             |
 | **`position`**       | `'relative' \| 'absolute'` | `'relative'`           | The CSS position of the container.                                                      |
@@ -194,7 +195,7 @@ const SnappyButton = () => (
 
 ### 4. Dynamic Theming (Scroll-Linked Animation)
 
-This example demonstrates the use case for passing Shared or Derived Values to splashColor. Inspired by the Google Search app, the search bar's background and ripple color smoothly interpolate as the user scrolls.
+This example demonstrates the use case for passing Shared or Derived Values to splashColor. Similar to the Google Search app, the search bar's background and ripple color smoothly interpolate as the user scrolls.
 
 ```tsx
 import { Dimensions, Text, View } from 'react-native';

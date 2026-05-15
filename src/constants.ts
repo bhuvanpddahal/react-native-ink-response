@@ -9,6 +9,7 @@ export const Defaults = {
   position: 'relative',
   initialScale: 0.3,
   initialOpacity: 0.3,
+  finalOpacity: 1,
   pressInDelay: 100,
   clipped: true,
   enterDuration: 250,

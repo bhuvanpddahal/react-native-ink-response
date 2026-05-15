@@ -25,6 +25,7 @@ export const InkResponse = ({
   position = Defaults.position,
   initialScale = Defaults.initialScale,
   initialOpacity = Defaults.initialOpacity,
+  finalOpacity = Defaults.finalOpacity,
   pressInDelay = Defaults.pressInDelay,
   clipped = Defaults.clipped,
   enterDuration = Defaults.enterDuration,
@@ -121,7 +122,7 @@ export const InkResponse = ({
       })
     );
     splashOpacity.set(
-      withTiming(1, {
+      withTiming(finalOpacity, {
         duration: enterDuration,
         easing: enterEasing,
       })

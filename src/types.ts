@@ -29,6 +29,7 @@ export type InkResponseProps = AnimatedPressableProps & {
   position?: InkResponsePosition;
   initialScale?: number;
   initialOpacity?: number;
+  finalOpacity?: number;
   pressInDelay?: number;
   clipped?: boolean;
   enterDuration?: number;
