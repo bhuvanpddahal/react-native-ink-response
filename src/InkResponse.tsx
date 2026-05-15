@@ -58,6 +58,16 @@ export const InkResponse = ({
 
   const containerRef = ref ?? animatedRef;
 
+  const checkEnabled = () => {
+    'worklet';
+
+    return !(typeof disabled === 'object' &&
+    disabled !== null &&
+    'get' in disabled
+      ? disabled.get()
+      : disabled);
+  };
+
   const runExitAnimation = () => {
     'worklet';
 
@@ -92,14 +102,14 @@ export const InkResponse = ({
     const tapX = splashPosition === 'tap' ? x : width / 2;
     const tapY = splashPosition === 'tap' ? y : height / 2;
 
-    const _radius =
+    const actualRadius =
       radius === undefined ? Math.sqrt(width ** 2 + height ** 2) / 2 : radius;
-    const shiftX = _radius - width / 2;
-    const shiftY = _radius - height / 2;
+    const shiftX = actualRadius - width / 2;
+    const shiftY = actualRadius - height / 2;
     const originX = shiftX + tapX;
     const originY = shiftY + tapY;
 
-    splashRadius.set(_radius);
+    splashRadius.set(actualRadius);
     translate.set({ x: -shiftX, y: -shiftY });
     transformOrigin.set(`${originX}px ${originY}px`);
     splashScale.set(initialScale);
@@ -130,15 +140,9 @@ export const InkResponse = ({
 
   const tapGesture = Gesture.Tap()
     .maxDuration(Infinity)
+    .enabled(checkEnabled())
     .onBegin((event) => {
-      const actualDisabled =
-        typeof disabled === 'object' && disabled !== null && 'get' in disabled
-          ? disabled.get()
-          : disabled;
-      if (
-        actualDisabled ||
-        (!interruptible && enterAnimationStatus.get() !== 'completed')
-      ) {
+      if (!interruptible && enterAnimationStatus.get() !== 'completed') {
         return;
       }
 

@@ -85,14 +85,14 @@ For more, check out the [Examples](#examples) section below.
 
 ### Animation & Easing
 
-| Prop                         | Type             | Default                               | Description                                                       |
-| :--------------------------- | :--------------- | :------------------------------------ | :---------------------------------------------------------------- |
-| **`enterDuration`**          | `number`         | `250`                                 | Duration of the expansion animation in milliseconds.              |
-| **`exitDuration`**           | `number`         | `200`                                 | Duration of the fade-out animation after release.                 |
-| **`enterEasing`**            | `EasingFunction` | `Easing.bezier(0.2, 0.6, 0.69, 0.93)` | Easing curve for the expansion (e.g., `Easing.out(Easing.quad)`). |
-| **`exitEasing`**             | `EasingFunction` | `Easing.linear`                       | Easing curve for the fade-out.                                    |
-| **`highlightEnterDuration`** | `number`         | `100`                                 | Duration (ms) for the highlight to fade in.                       |
-| **`highlightExitDuration`**  | `number`         | `200`                                 | Duration (ms) for the highlight to fade out after release.        |
+| Prop                         | Type             | Default                               | Description                                                              |
+| :--------------------------- | :--------------- | :------------------------------------ | :----------------------------------------------------------------------- |
+| **`enterDuration`**          | `number`         | `250`                                 | Duration of the splash expansion animation in milliseconds.              |
+| **`exitDuration`**           | `number`         | `200`                                 | Duration of the splash fade-out animation after release.                 |
+| **`enterEasing`**            | `EasingFunction` | `Easing.bezier(0.2, 0.6, 0.69, 0.93)` | Easing curve for the splash expansion (e.g., `Easing.out(Easing.quad)`). |
+| **`exitEasing`**             | `EasingFunction` | `Easing.linear`                       | Easing curve for the splash fade-out.                                    |
+| **`highlightEnterDuration`** | `number`         | `100`                                 | Duration (ms) for the highlight to fade in.                              |
+| **`highlightExitDuration`**  | `number`         | `200`                                 | Duration (ms) for the highlight to fade out after release.               |
 
 > Import `Easing` from `react-native-reanimated` package.
 
