@@ -34,32 +34,30 @@ yarn add react-native-ink-response
 ## Basic Usage
 
 ```tsx
-import { Text } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { InkResponse } from 'react-native-ink-response';
 
 const MyButton = () => {
   return (
-    <InkResponse
-      highlightColor="#d97706"
-      style={{
-        paddingHorizontal: 16,
-        paddingVertical: 20,
-        borderRadius: 50,
-        backgroundColor: '#f59e0b',
-      }}
-    >
-      <Text
-        style={{
-          color: 'black',
-          fontWeight: '500',
-          textAlign: 'center',
-        }}
-      >
-        Tap me
-      </Text>
+    <InkResponse highlightColor="#d97706" style={styles.button}>
+      <Text style={styles.text}>Tap me</Text>
     </InkResponse>
   );
 };
+
+const styles = StyleSheet.create({
+  button: {
+    paddingHorizontal: 16,
+    paddingVertical: 20,
+    borderRadius: 50,
+    backgroundColor: '#f59e0b',
+  },
+  text: {
+    color: 'black',
+    fontWeight: '500',
+    textAlign: 'center',
+  },
+});
 ```
 
 For more, check out the [Examples](#examples) section below.
@@ -114,26 +112,36 @@ For more, check out the [Examples](#examples) section below.
 This is the most common use case. The ripple is constrained to the container's borders, making it perfect for list items or interactive cards.
 
 ```tsx
-import { Text } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { InkResponse } from 'react-native-ink-response';
 
 const SettingsCard = () => (
   <InkResponse
-    onTap={() => console.log('Settings Pressed')}
     splashColor="rgba(0, 0, 0, 0.1)"
     clipped={true} // Ripple is contained within the borderRadius
-    style={{
-      padding: 16,
-      borderRadius: 12,
-      borderWidth: 1,
-      borderColor: '#eee',
-      backgroundColor: '#fff',
-    }}
+    style={styles.card}
   >
-    <Text style={{ fontSize: 16, fontWeight: '600' }}>Account Settings</Text>
-    <Text style={{ color: '#666' }}>Privacy, security, and language</Text>
+    <Text style={styles.title}>Account Settings</Text>
+    <Text style={styles.description}>Privacy, security, and language</Text>
   </InkResponse>
 );
+
+const styles = StyleSheet.create({
+  card: {
+    padding: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#eee',
+    backgroundColor: '#fff',
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  description: {
+    color: '#666',
+  },
+});
 ```
 
 ### 2. Circular Icon Button (Unclipped)
@@ -141,26 +149,30 @@ const SettingsCard = () => (
 By setting `clipped={false}`, you allow the ripple to expand into a perfect circle that can exceed the touch target's bounds - essential for Material-style icon buttons.
 
 ```tsx
-import { InkResponse } from 'react-native-ink-response';
 import { Ionicons } from '@expo/vector-icons'; // Or your preferred icon library
+import { StyleSheet } from 'react-native';
+import { InkResponse } from 'react-native-ink-response';
 
 const RoundIconButton = () => (
   <InkResponse
-    onTap={() => console.log('Search clicked')}
     clipped={false} // Allows the ripple to overflow
     splashPosition="center" // Ripple starts from the icon center
     splashRadius={28} // Constrains the circular splash size, increase/decrease as needed
     splashColor="rgba(33, 150, 243, 0.2)"
-    style={{
-      width: 40,
-      height: 40,
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}
+    style={styles.button}
   >
     <Ionicons name="search" size={24} color="#2196F3" />
   </InkResponse>
 );
+
+const styles = StyleSheet.create({
+  button: {
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 ```
 
 ### 3. High-Energy "Snappy" Ripple
@@ -168,7 +180,7 @@ const RoundIconButton = () => (
 You can customize the animation feel by overriding the default durations and easing functions. This example creates a very fast, responsive-feeling press.
 
 ```tsx
-import { Text } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { InkResponse } from 'react-native-ink-response';
 import { Easing } from 'react-native-reanimated';
 
@@ -178,19 +190,26 @@ const SnappyButton = () => (
     exitDuration={80} // Quick fade out
     enterEasing={Easing.out(Easing.quad)}
     splashColor="#7E22CE"
-    onTap={() => console.log('Snappy pressed!')}
-    style={{
-      width: '100%',
-      alignItems: 'center',
-      paddingVertical: 14,
-      paddingHorizontal: 20,
-      backgroundColor: '#A855F7',
-      borderRadius: 4,
-    }}
+    style={styles.button}
   >
-    <Text style={{ color: 'white', fontWeight: 'bold' }}>FAST ACTION</Text>
+    <Text style={styles.text}>FAST ACTION</Text>
   </InkResponse>
 );
+
+const styles = StyleSheet.create({
+  button: {
+    width: '100%',
+    alignItems: 'center',
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    backgroundColor: '#A855F7',
+    borderRadius: 4,
+  },
+  text: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+});
 ```
 
 ### 4. Dynamic Theming (Scroll-Linked Animation)
@@ -198,7 +217,7 @@ const SnappyButton = () => (
 This example demonstrates the use case for passing Shared or Derived Values to splashColor. Similar to the Google Search app, the search bar's background and ripple color smoothly interpolate as the user scrolls.
 
 ```tsx
-import { Dimensions, Text, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import { InkResponse } from 'react-native-ink-response';
 import Animated, {
   interpolateColor,
@@ -241,37 +260,49 @@ const SearchInputScreen = () => {
       onScroll={handleScroll}
       scrollEventThrottle={16}
       stickyHeaderIndices={[0]}
-      style={{ flex: 1, backgroundColor: 'white' }}
+      style={styles.container}
     >
       {/* Sticky Header with Dynamic InkResponse */}
-      <View
-        style={{
-          paddingVertical: 8,
-          paddingHorizontal: 16,
-          backgroundColor: 'white',
-        }}
-      >
+      <View style={styles.inputWrapper}>
         <InkResponse
-          onTap={() => console.log('Search input tapped!')}
           splashColor={splashColor} // Accepts DerivedValue!
-          style={{
-            width: '100%',
-            padding: 20,
-            borderRadius: 40,
-            borderWidth: 1,
-            borderColor: '#E5E5E5',
-            backgroundColor, // Accepts DerivedValue!
-          }}
+          style={[styles.searchInput, { backgroundColor }]} // Accepts DerivedValue!
         >
-          <Text style={{ fontSize: 20, color: '#525252' }}>Search</Text>
+          <Text style={styles.placeholderText}>Search</Text>
         </InkResponse>
       </View>
 
       {/* Spacer to allow scrolling */}
-      <View style={{ height: screenHeight }} />
+      <View style={styles.blankContent} />
     </Animated.ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  inputWrapper: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    backgroundColor: 'white',
+  },
+  searchInput: {
+    width: '100%',
+    padding: 20,
+    borderRadius: 40,
+    borderWidth: 1,
+    borderColor: '#E5E5E5',
+  },
+  placeholderText: {
+    fontSize: 20,
+    color: '#525252',
+  },
+  blankContent: {
+    height: screenHeight,
+  },
+});
 ```
 
 ---
